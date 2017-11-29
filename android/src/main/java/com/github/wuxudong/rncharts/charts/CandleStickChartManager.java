@@ -9,6 +9,9 @@ import com.github.wuxudong.rncharts.listener.RNOnChartValueSelectedListener;
 
 public class CandleStickChartManager extends BarLineChartBaseManager<CandleStickChart, CandleEntry> {
 
+    public static final int COMMAND_ADD_ENTRY = 1;
+    public static final int COMMAND_MOVE_VIEW_TO_X = 2;
+
     @Override
     public String getName() {
         return "RNCandleStickChart";
@@ -25,5 +28,37 @@ public class CandleStickChartManager extends BarLineChartBaseManager<CandleStick
     @Override
     DataExtract getDataExtract() {
         return new CandleDataExtract();
+    }
+
+    public @Nullable Map<String, Integer> getCommandsMap() {
+        return MapBuilder.of(
+            "addEntry", COMMAND_ADD_ENTRY,
+            "moveViewToX", COMMAND_MOVE_VIEW_TO_X);
+    }
+
+    @Override
+    public void receiveCommand(android.view.View chartView, int commandId, @Nullable ReadableArray args) {
+        CandleStickChart chart = (CandleStickChart) chartView;
+        switch (commandId) {
+            case COMMAND_ADD_ENTRY:
+                CandleDataExtract extract = new CandleDataExtract();
+                CandleEntry entry = extract.createEntry(args, 0);
+
+                chart.getData().addEntry(entry, 0);
+                chart.notifyDataSetChanged();
+
+                ViewPortHandler handler = chart.getViewPortHandler();
+
+                float maxTransX = -handler.contentWidth() * (handler.getScaleX() - 1f);
+                Log.e("T", Float.toString(handler.getTransX()));
+                Log.e("M", Float.toString(maxTransX));
+                if (handler.getTransX() == maxTransX) {
+                    chart.moveViewToX(entry.getX());
+                }
+                break;
+            case COMMAND_MOVE_VIEW_TO_X:
+                chart.moveViewToX((float)500.0);
+                break;
+        }
     }
 }
