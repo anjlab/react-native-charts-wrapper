@@ -1,11 +1,17 @@
 package com.github.wuxudong.rncharts.charts;
 
+import javax.annotation.Nullable;
+import java.util.Map;
+import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.wuxudong.rncharts.data.CandleDataExtract;
 import com.github.wuxudong.rncharts.data.DataExtract;
 import com.github.wuxudong.rncharts.listener.RNOnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 public class CandleStickChartManager extends BarLineChartBaseManager<CandleStickChart, CandleEntry> {
 
@@ -50,8 +56,6 @@ public class CandleStickChartManager extends BarLineChartBaseManager<CandleStick
                 ViewPortHandler handler = chart.getViewPortHandler();
 
                 float maxTransX = -handler.contentWidth() * (handler.getScaleX() - 1f);
-                Log.e("T", Float.toString(handler.getTransX()));
-                Log.e("M", Float.toString(maxTransX));
                 if (handler.getTransX() == maxTransX) {
                     chart.moveViewToX(entry.getX());
                 }

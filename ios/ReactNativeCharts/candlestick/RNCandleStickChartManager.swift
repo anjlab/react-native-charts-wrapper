@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import Charts
 
 @objc(RNCandleStickChartManager)
 open class RNCandleStickChartManager: RCTViewManager {
