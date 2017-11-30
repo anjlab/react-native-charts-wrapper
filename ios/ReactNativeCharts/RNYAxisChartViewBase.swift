@@ -30,6 +30,10 @@ class RNYAxisChartViewBase: RNChartViewBase {
             axis.labelPosition = BridgeUtils.parseYAxisLabelPosition(config["position"].stringValue)
         }
 
+        if config["minWidth"].number != nil {
+          axis.minWidth = CGFloat(config["minWidth"].numberValue)
+        }
+
         // TODO docs says the remaining config needs to be applied before setting data. Test it
         // zero line
         if config["zeroLine"].exists() {
